@@ -13,6 +13,10 @@ export class ToDoListService {
       return this.firestore.collection('tasks').snapshotChanges();
   }
 
+  getTask(taskId) {
+      return this.firestore.collection(`tasks/`).doc(taskId).get();
+  }
+
   createTask(task: Tasks){
       return this.firestore.collection('tasks').add(task);
   }

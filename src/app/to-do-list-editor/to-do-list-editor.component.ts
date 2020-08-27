@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
 import {ActivatedRoute} from "@angular/router";
+import {Tasks} from "../to-do-list.model";
+import {MatTableDataSource} from "@angular/material/table";
+import {ToDoListService} from "../to-do-list.service";
 
 @Component({
   selector: 'to-do-list-editor',
@@ -19,7 +22,8 @@ export class ProfileEditorComponent {
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private taskService: ToDoListService
   ) {
   }
 
@@ -35,11 +39,20 @@ export class ProfileEditorComponent {
 
   updateForm(taskId) {
     // this.task = this.service.getTask(taskId);
-    this.form = new FormGroup({
-      // position: new FormControl({value: taskId, disabled: true}, Validators.required),
-      name: new FormControl('Nancy', Validators.required),
-      description: new FormControl('Bla bla blaa'),
-      date: new FormControl('15:00 07 August 2020'),
+    this.taskService.getTask(taskId).subscribe(data => {
+      console.log(data);
+      const task = {
+        id: data.id,
+        ...data.data()
+      } as Tasks;
+      console.log(task.date);
+      console.log(task.date.toMillis());
+      this.form = new FormGroup({
+        position: new FormControl({value: task.position, disabled: true}, Validators.required),
+        name: new FormControl(task.name, Validators.required),
+        description: new FormControl(task.description),
+        date: new FormControl(task.date.toMillis()),
+      });
     });
   }
 
