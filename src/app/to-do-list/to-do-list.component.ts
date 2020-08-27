@@ -14,7 +14,7 @@ import {ToDoListService} from "../to-do-list.service";
   templateUrl: './to-do-list.component.html',
 })
 export class TableSelectionExample implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'date', 'is_done'];
+  displayedColumns: string[] = ['number', 'name', 'date', 'is_done'];
   dataSource = new MatTableDataSource<Tasks>([]);
   selection = new SelectionModel<Tasks>(true, []);
 
@@ -33,45 +33,10 @@ export class TableSelectionExample implements OnInit {
   constructor(
     private router: Router,
     private taskService: ToDoListService
-  ) {
-  }
-
-  create(task: Tasks) {
-    this.taskService.createTask(task);
-  }
-
-  update(task: Tasks) {
-    this.taskService.updateTask(task);
-  }
-
-  delete(id: string) {
-    this.taskService.deleteTask(id);
-  }
-
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
+  ) {}
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   onEdit(id) {
     this.router.navigateByUrl(`/edit/${id}`);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: Tasks): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 }

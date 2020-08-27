@@ -17,13 +17,12 @@ export class ToDoListService {
       return this.firestore.collection(`tasks/`).doc(taskId).get();
   }
 
-  createTask(task: Tasks){
+  createTask(task){
       return this.firestore.collection('tasks').add(task);
   }
 
-  updateTask(task: Tasks){
-      delete task.id;
-      this.firestore.doc(`tasks/${ task.id }`).update(task);
+  updateTask(taskId, task: Tasks){
+      this.firestore.collection('tasks').doc(taskId).set(task);
   }
 
   deleteTask(taskId: string){

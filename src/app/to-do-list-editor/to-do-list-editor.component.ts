@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
 import {ActivatedRoute} from "@angular/router";
 import {Tasks} from "../to-do-list.model";
-import {MatTableDataSource} from "@angular/material/table";
 import {ToDoListService} from "../to-do-list.service";
 
 @Component({
@@ -13,11 +12,13 @@ import {ToDoListService} from "../to-do-list.service";
 
 export class ProfileEditorComponent {
   taskId = null;
+  is_edit = false;
   form = this.fb.group({
-    position: [null],
+    number: [null],
     name: ['', Validators.required],
     date: [''],
     description: [''],
+    is_done: [false],
   });
 
   constructor(
@@ -33,37 +34,32 @@ export class ProfileEditorComponent {
       return;
     }
     this.taskId = taskId;
-    this.updateForm(taskId);
+    this.updateForm();
   }
 
 
-  updateForm(taskId) {
-    // this.task = this.service.getTask(taskId);
-    this.taskService.getTask(taskId).subscribe(data => {
-      console.log(data);
+  updateForm() {
+    this.taskService.getTask(this.taskId).subscribe(data => {
+      const taskData = data.data()
       const task = {
         id: data.id,
-        ...data.data()
+        ...taskData
       } as Tasks;
-      console.log(task.date);
-      console.log(task.date.toMillis());
       this.form = new FormGroup({
-        position: new FormControl({value: task.position, disabled: true}, Validators.required),
+        number: new FormControl(task.number),
         name: new FormControl(task.name, Validators.required),
         description: new FormControl(task.description),
-        date: new FormControl(task.date.toMillis()),
+        date: new FormControl(task.date),
+        is_done: new FormControl(task.is_done),
       });
     });
   }
 
-  dateChanged(eventDate: string): Date | null {
-    return !!eventDate ? new Date(eventDate) : null;
-  }
-
   onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.form.value);
-    console.warn(this.taskId);
-    // this.task = this.service.updateTask(taskId);
+    if (this.taskId) {
+      this.taskService.updateTask(this.taskId, this.form.value)
+    } else {
+      this.taskService.createTask(this.form.value)
+    }
   }
 }

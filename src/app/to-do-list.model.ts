@@ -1,7 +1,7 @@
 export class Tasks {
     id: string;
     name: string;
-    position: number;
+    number: number;
     date: any;
     description: string;
     is_done: boolean;

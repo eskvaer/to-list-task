@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <label>
     Number:
-    <input type="text" formControlName="position">
+    <input type="text" formControlName="number">
   </label>
 
   <label>
@@ -11,12 +11,17 @@
 
   <label>
     Date:
-    <input type="text" formControlName="date" [value]="date | date:'HH:mm dd MMMM yyyy'">
+    <input type="datetime-local" formControlName="date">
   </label>
 
   <label>
     Description:
     <input type="text" formControlName="description">
+  </label>
+
+  <label *ngIf="taskId">
+    Done:
+    <input type="checkbox" formControlName="is_done">
   </label>
 
   <button type="submit" [disabled]="!form.valid">Submit</button>
