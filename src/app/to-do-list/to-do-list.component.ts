@@ -1,7 +1,9 @@
 import {SelectionModel} from '@angular/cdk/collections';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
+import {Tasks} from "../to-do-list.model";
+import {ToDoListService} from "../to-do-list.service";
 
 export interface PeriodicElement {
   name: string;
@@ -25,12 +27,41 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./to-do-list.component.css'],
   templateUrl: './to-do-list.component.html',
 })
-export class TableSelectionExample {
+export class TableSelectionExample implements OnInit{
   displayedColumns: string[] = ['position', 'name', 'date', 'is_done'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<PeriodicElement>([]);
+  // dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   selection = new SelectionModel<PeriodicElement>(true, []);
+  tasks: Tasks[];
 
-  constructor(private router: Router) {}
+  ngOnInit() {
+    this.policyService.getTasks().subscribe(data => {
+      console.log(data);
+      this.tasks = data.map((e: any) => {
+        return {
+          id: e.payload.doc.id,
+          ...e.payload.doc.data()
+        } as Tasks;
+      })
+    });
+  }
+
+  constructor(
+    private router: Router,
+    private policyService: ToDoListService
+  ) {}
+
+  create(task: Tasks){
+      this.policyService.createTask(task);
+  }
+
+  update(task: Tasks) {
+    this.policyService.updateTask(task);
+  }
+
+  delete(id: string) {
+    this.policyService.deleteTask(id);
+  }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -42,14 +73,13 @@ export class TableSelectionExample {
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   onEdit(id) {
-    console.log(id);
-    this.router.navigateByUrl(`/edit/${ id }`);
+    this.router.navigateByUrl(`/edit/${id}`);
   }
 
   /** The label for the checkbox on the passed row */

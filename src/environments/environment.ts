@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyB5IdZxgXhBsnxfHo6eLCpu-lEPd5RFcHE",
+    authDomain: "to-do-list-42719.firebaseapp.com",
+    databaseURL: "https://to-do-list-42719.firebaseio.com",
+    projectId: "to-do-list-42719",
+    storageBucket: "to-do-list-42719.appspot.com",
+    messagingSenderId: "851966317039",
+    appId: "1:851966317039:web:083f2fb322d0415204e61a",
+    measurementId: "G-JL9V3P9Z52"
+  }
 };
 
 /*
@@ -14,10 +24,3 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
-
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/

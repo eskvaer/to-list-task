@@ -9,8 +9,9 @@ import {ActivatedRoute} from "@angular/router";
 })
 
 export class ProfileEditorComponent {
+  taskId = null;
   form = this.fb.group({
-    position: [''],
+    position: [null],
     name: ['', Validators.required],
     date: [''],
     description: [''],
@@ -23,27 +24,33 @@ export class ProfileEditorComponent {
   }
 
   ngOnInit() {
-    const todoId = this.route.snapshot.paramMap.get('id');
-    this.updateProfile(todoId);
-  }
-
-
-  updateProfile(taskId) {
+    const taskId = this.route.snapshot.paramMap.get('id');
     if (!taskId) {
       return;
     }
+    this.taskId = taskId;
+    this.updateForm(taskId);
+  }
+
+
+  updateForm(taskId) {
     // this.task = this.service.getTask(taskId);
     this.form = new FormGroup({
-      position: new FormControl({value: taskId, disabled: true}, Validators.required),
+      // position: new FormControl({value: taskId, disabled: true}, Validators.required),
       name: new FormControl('Nancy', Validators.required),
       description: new FormControl('Bla bla blaa'),
       date: new FormControl('15:00 07 August 2020'),
     });
   }
 
+  dateChanged(eventDate: string): Date | null {
+    return !!eventDate ? new Date(eventDate) : null;
+  }
+
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.form.value);
+    console.warn(this.taskId);
     // this.task = this.service.updateTask(taskId);
   }
 }

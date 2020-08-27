@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <label>
-    Number:
-    <input type="text" formControlName="position">
-  </label>
+<!--  <label>-->
+<!--    Number:-->
+<!--    <input type="text" formControlName="position">-->
+<!--  </label>-->
 
   <label>
     Name:
@@ -11,7 +11,7 @@
 
   <label>
     Date:
-    <input type="text" formControlName="date">
+    <input type="datetime-local" formControlName="date" (ngModelChange)="filterDateFrom = dateChanged($event)">
   </label>
 
   <label>

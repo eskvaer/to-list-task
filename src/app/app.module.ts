@@ -10,6 +10,9 @@ import { TableSelectionExample } from "./to-do-list/to-do-list.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { ProfileEditorComponent } from "./to-do-list-editor/to-do-list-editor.component";
 import {CommonModule} from "@angular/common";
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from '../environments/environment';
 
 @NgModule({
   imports: [
@@ -19,9 +22,12 @@ import {CommonModule} from "@angular/common";
     RouterModule.forRoot([
       {path: '', component: TableSelectionExample},
       {path: 'edit/:id', component: ProfileEditorComponent},
+      {path: 'add', component: ProfileEditorComponent},
     ]),
     MatCheckboxModule,
-    CommonModule
+    CommonModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireDatabaseModule
   ],
   declarations: [
     AppComponent,
