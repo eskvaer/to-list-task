@@ -1,4 +1,7 @@
 {
+  "database": {
+    "rules": "database.rules.json"
+  },
   "firestore": {
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
@@ -11,21 +14,7 @@
       "**/node_modules/**"
     ]
   },
-  "database": {
-    "rules": "database.rules.json"
-  },
-  "emulators": {
-    "firestore": {
-      "port": 8080
-    },
-    "database": {
-      "port": 9000
-    },
-    "hosting": {
-      "port": 5000
-    },
-    "ui": {
-      "enabled": true
-    }
+  "storage": {
+    "rules": "storage.rules"
   }
 }
