@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Tasks} from "../to-do-list.model";
 import {ToDoListService} from "../to-do-list.service";
 
@@ -24,7 +24,8 @@ export class ProfileEditorComponent {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private taskService: ToDoListService
+    private taskService: ToDoListService,
+    private router: Router
   ) {
   }
 
@@ -61,5 +62,6 @@ export class ProfileEditorComponent {
     } else {
       this.taskService.createTask(this.form.value)
     }
+    this.router.navigateByUrl('/');
   }
 }
